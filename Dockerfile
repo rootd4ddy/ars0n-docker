@@ -1,29 +1,18 @@
-FROM debian:bullseye
+FROM debian
 
-WORKDIR /app
+RUN apt-get update && apt install python3 python3-pip  python3-flask-cors wget curl git unzip sudo -y
 
-# Copy your application code to the container
+WORKDIR /opt
+
 COPY ars0n-framework/ .
 
-# Install Python and pip
-RUN apt-get update && apt-get install -y python3 python3-pip
-
-# Create a .keys directory in the container
-RUN mkdir -p /root/.keys
-
-# Create a keystore file in the .keys directory and set environment variables
+RUN mkdir -p /root/.keys/
 RUN echo 'export SLACK_TOKEN=""' > /root/.keys/keystore
 RUN echo 'export GITHUB_PAT=""' >> /root/.keys/keystore
 RUN echo 'export SHODAN_API_KEY=""' >> /root/.keys/keystore
 RUN echo 'export HACKERONE_USER=""' >> /root/.keys/keystore
-RUN echo 'export HACKERONE_API_KEY=""' >> /root/.keys/keystore
+RUN echo 'export HACKERONE_API_KEY="T"' >> /root/.keys/keystore
 
-# Print a message to indicate whether the .keys directory was found
-RUN echo '[+] Keys directory found.' > /root/.keys/keystore
+RUN python3 install.py
 
-# Install Python dependencies
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-
-# Run the non-interactive script
-CMD ["python3", "install.py"]
+CMD chmod 777 run.sh && ./run.sh
