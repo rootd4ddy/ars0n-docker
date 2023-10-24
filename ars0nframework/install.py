@@ -1,13 +1,6 @@
-import subprocess, argparse
+import subprocess, argparse, sys
 from time import sleep
 from datetime import datetime
-import os
-
-slack_token = os.environ.get("SLACK_TOKEN", "")
-github_pat = os.environ.get("GITHUB_PAT", "")
-shodan_api_key = os.environ.get("SHODAN_API_KEY", "")
-
-
 
 class Timer:
     def __init__(self):
@@ -453,9 +446,7 @@ def install_client():
         print("[!] Something went wrong!  The Ars0n Framework Client was NOT installed successfully...")
 
 def run_server_prompt():
-    prompt = input("[?] Would you like to run the web application now? (Y/n)")
-    if prompt == "Y":
-        subprocess.run(["chmod 777 run.sh; ./run.sh"], shell=True)
+    sys.exit(0)
 
 def update_apt():
     subprocess.run(["sudo apt-get update"], shell=True)
